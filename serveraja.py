@@ -27,8 +27,9 @@ def start_server(port=2005):
     server_socket.bind(('', port))
     server_socket.listen(1)
     print(f"server sudah siap di {port}...")
-    connection_socket, client_address = server_socket.accept()
-    handle_client(connection_socket, client_address)
-
+    while True:
+        connection_socket, client_address = server_socket.accept()
+        handle_client(connection_socket, client_address)
+    
 if __name__ == "__main__":
     start_server()
