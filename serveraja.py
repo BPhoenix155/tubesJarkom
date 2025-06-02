@@ -13,6 +13,7 @@ def handle_client(connection_socket, client_address):
                 content = f.read()
             header = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
             response = header.encode() + content
+            connection_socket.sendall(response)
         else:
             header = "HTTP/1.1 404 Not Found\r\n\r\n"
             body = "<html><body><h1>404 Not Found</h1></body></html>"
