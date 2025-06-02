@@ -1,5 +1,4 @@
 import socket
-import threading
 import os
 def handle_client(connection_socket, client_address):
     try:
@@ -9,8 +8,6 @@ def handle_client(connection_socket, client_address):
         if len(lines) == 0:
             return
         filename = lines[0].split()[1].lstrip("/")
-        if filename == "":
-            filename = "index.html"
         if os.path.exists(filename):
             with open(filename, "rb") as f:
                 content = f.read()
@@ -28,11 +25,10 @@ def handle_client(connection_socket, client_address):
 def start_server(port=2005):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(('', port))
-    server_socket.listen(5)
+    server_socket.listen(1)
     print(f"server sudah siap di {port}...")
-    while True:
-        client_socket, client_address = server_socket.accept()
-        thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
-        thread.start()
+    connection_socket, client_address = server_socket.accept()
+    handle_client(connection_socket, client_address)
+
 if __name__ == "__main__":
     start_server()
